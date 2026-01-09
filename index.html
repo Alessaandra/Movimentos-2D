@@ -3,104 +3,147 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz: Trabalho e Energia</title>
+    <title>Desafio Pratique: Certificado 2D</title>
     <style>
         :root {
-            --bg: #0d0d0f;
-            --card: #1a1f26;
-            --primary: #4caf50;
-            --secondary: #00d4ff;
+            --bg: #0a0a0c;
+            --card: #161b22;
+            --primary: #9c27b0;
+            --correct: #2e7d32;
+            --wrong: #c62828;
             --text: #f0f6fc;
-            --wrong: #ff5252;
+            --gold: #ffd700;
         }
 
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); padding: 20px; display: flex; flex-direction: column; align-items: center; }
-        .quiz-container { max-width: 750px; width: 100%; }
-        header { text-align: center; margin-bottom: 30px; border-bottom: 2px solid var(--primary); padding-bottom: 10px; }
-        
-        .score-board { position: sticky; top: 10px; background: var(--primary); color: white; padding: 12px 25px; border-radius: 30px; font-weight: bold; z-index: 100; box-shadow: 0 4px 15px rgba(0,0,0,0.5); margin-bottom: 20px; }
-        
-        .question-card { background: var(--card); border-radius: 12px; padding: 25px; margin-bottom: 25px; border: 1px solid #30363d; }
-        h3 { color: var(--secondary); margin-top: 0; }
-        
-        .option-btn { width: 100%; background: #262c36; border: 1px solid #3d444d; color: white; padding: 14px; border-radius: 8px; cursor: pointer; text-align: left; margin-bottom: 10px; transition: 0.2s; }
-        .option-btn:hover:not(:disabled) { border-color: var(--primary); background: #2f3742; }
-        .option-btn:disabled { opacity: 0.6; cursor: not-allowed; }
-        
-        .feedback { display: none; margin-top: 15px; padding: 15px; border-radius: 8px; font-size: 0.95rem; line-height: 1.5; }
-        .correct { background: rgba(76, 175, 80, 0.2); border: 1px solid var(--primary); color: #81c784; }
-        .wrong { background: rgba(255, 82, 82, 0.2); border: 1px solid var(--wrong); color: #ff8a80; }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-        #certificate { display: none; background: white; color: #1a1a1a; padding: 50px; border: 15px double #4caf50; text-align: center; margin-top: 30px; position: relative; width: 100%; box-sizing: border-box; }
-        .cert-name { font-size: 2.5rem; font-weight: bold; color: #2e7d32; margin: 25px 0; border-bottom: 2px solid #ccc; }
-        
-        .controls { display: flex; gap: 10px; justify-content: center; margin-bottom: 30px; }
-        .reset-btn { background: #3d444d; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; }
-        .reset-btn:hover { background: #575e6a; }
+        .quiz-container { max-width: 700px; width: 100%; }
+
+        header { text-align: center; margin-bottom: 30px; }
+
+        .question-card {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid #30363d;
+            transition: 0.3s;
+        }
+
+        .option-btn {
+            width: 100%;
+            background: #0d1117;
+            border: 1px solid #30363d;
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: left;
+            margin-bottom: 8px;
+        }
+
+        .option-btn:hover:not(:disabled) { border-color: var(--primary); background: #1c2128; }
+
+        .feedback {
+            display: none;
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+        }
+
+        .correct { background: rgba(46, 125, 50, 0.2); border: 1px solid var(--correct); color: #81c784; }
+        .wrong { background: rgba(198, 40, 40, 0.2); border: 1px solid var(--wrong); color: #e57373; }
+
+        .score-board {
+            position: sticky;
+            top: 10px;
+            background: var(--primary);
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            z-index: 100;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        /* ESTILO DO CERTIFICADO */
+        #certificate {
+            display: none;
+            width: 100%;
+            max-width: 600px;
+            background: white;
+            color: #1a1a1a;
+            padding: 40px;
+            border: 10px double var(--primary);
+            text-align: center;
+            margin-top: 30px;
+            position: relative;
+        }
+
+        #certificate h2 { font-family: 'Georgia', serif; color: #1a1a1a; border: none; }
+        .cert-name { font-size: 2rem; font-weight: bold; color: var(--primary); margin: 20px 0; text-decoration: underline; }
+        .cert-stamp { position: absolute; bottom: 20px; right: 20px; opacity: 0.2; transform: rotate(-20deg); }
     </style>
 </head>
 <body>
 
 <header>
-    <h1>⚡ Simulação: Trabalho e Energia</h1>
-    <p>Prove que você domina a conservação da energia mecânica!</p>
+    <h1>📝 Pratique: Movimentos 2D</h1>
+    <p>Complete o desafio para ganhar o seu Certificado de Especialista!</p>
 </header>
 
-<div class="score-board">Questão: <span id="answered">0</span>/15 | Acertos: <span id="score">0</span></div>
-
-<div class="controls">
-    <button class="reset-btn" onclick="resetQuiz()">🔄 Reiniciar Desafio</button>
-</div>
-
-
+<div class="score-board">Progresso: <span id="answered">0</span>/10 | Acertos: <span id="score">0</span></div>
 
 <div class="quiz-container" id="quiz"></div>
 
 <div id="final-area" style="display:none; text-align:center; width:100%;">
     <div id="certificate">
-        <p style="font-size: 1.2rem; letter-spacing: 5px;">📜 CERTIFICADO DE MESTRE</p>
-        <h2 style="font-size: 2rem;">ENERGIA & MOVIMENTO</h2>
-        <p>Certificamos que o(a) estudante</p>
-        <div class="cert-name" id="userName">ESTUDANTE</div>
-        <p>concluiu os desafios de dinâmica, trabalho e conservação de energia.</p>
-        <p><b>Aproveitamento: <span id="finalGrade">0</span>%</b></p>
-        <p><i>"A energia não é criada nem destruída, apenas transformada."</i></p>
+        <p>🏆 CERTIFICADO DE EXCELÊNCIA 🏆</p>
+        <h2>CINEMÁTICA EXPLORER</h2>
+        <p>Certificamos que</p>
+        <div class="cert-name" id="userName">NOME DO ALUNO</div>
+        <p>concluiu com êxito os desafios de Movimentos Bidimensionais</p>
+        <p>Aproveitamento: <span id="finalGrade">0</span>%</p>
+        <p><small>Data: <span id="certDate"></span></small></p>
+        <div class="cert-stamp">✅ APROVADO</div>
     </div>
-    <div style="display: flex; gap: 15px; justify-content: center;">
-        <button onclick="window.print()" style="margin-top: 30px; padding: 15px 30px; background: gold; border: none; font-weight: bold; cursor: pointer; border-radius: 5px;">📄 Salvar Certificado</button>
-        <button onclick="resetQuiz()" style="margin-top: 30px; padding: 15px 30px; background: #333; color: white; border: none; font-weight: bold; cursor: pointer; border-radius: 5px;">🔄 Tentar Novamente</button>
-    </div>
+    <button onclick="window.print()" style="margin-top:20px; padding:10px 20px; background:var(--gold); color:black; border:none; border-radius:5px; font-weight:bold; cursor:pointer;">🖨️ Imprimir ou Salvar PDF</button>
 </div>
 
 <script>
     const questions = [
-        { q: "1. Um livro de 2kg está a 1,2m do chão. Qual sua Energia Potencial Gravitacional? (g=10)", options: ["2,4 J", "12 J", "24 J"], correct: 2, explain: "Ep = m.g.h = 2 . 10 . 1,2 = 24 Joules." },
-        { q: "2. Um livro de 2kg repousa sobre uma mesa. Qual sua energia cinética?", options: ["0 J", "24 J", "20 J"], correct: 0, explain: "Energia cinética depende de velocidade. Se está apoiado em repouso, Ec = 0." },
-        { q: "3. Uma bola de 0,5kg é solta de 20m. Qual a Energia Mecânica no topo?", options: ["10 J", "100 J", "200 J"], correct: 1, explain: "No topo, Em = Ep = 0,5 . 10 . 20 = 100 J." },
-        { q: "4. Na questão anterior, qual a velocidade da bola ao chegar ao chão?", options: ["10 m/s", "20 m/s", "40 m/s"], correct: 1, explain: "Ep vira Ec. 100 = (0,5.v²)/2 -> v = √400 = 20 m/s." },
-        { q: "5. Uma criança (40kg) desce um escorregador de 5m. Qual a Ec ao chegar no final?", options: ["200 J", "2000 J", "400 J"], correct: 1, explain: "Ep inicial (40.10.5 = 2000J) se transforma totalmente em cinética." },
-        { q: "6. Qual a velocidade da criança ao final do escorregador de 5m?", options: ["10 m/s", "5 m/s", "14 m/s"], correct: 0, explain: "v = √(2.g.h) = √(2.10.5) = 10 m/s." },
-        { q: "7. Uma bola de 0,2kg é lançada para cima a 10m/s. Qual a Ec inicial?", options: ["1 J", "10 J", "20 J"], correct: 1, explain: "Ec = (0,2 . 10²) / 2 = 10 J." },
-        { q: "8. Qual a altura máxima atingida pela bola de 0,2kg lançada a 10m/s?", options: ["5 m", "10 m", "2 m"], correct: 0, explain: "mgh = Ec inicial -> 0,2.10.h = 10 -> h = 5m." },
-        { q: "9. Um carrinho de 500kg no topo de 30m. Qual a Energia Mecânica Total?", options: ["1500 J", "150.000 J", "50.000 J"], correct: 1, explain: "Em = m.g.h = 500 . 10 . 30 = 150.000 J." },
-        { q: "10. Velocidade do carrinho (500kg) ao passar por um ponto a 10m do solo (saiu dos 30m):", options: ["20 m/s", "14,1 m/s", "25 m/s"], correct: 0, explain: "Caiu 20m. v = √(2.10.20) = 20 m/s." },
-        { q: "11. Por que a Energia Mecânica se conserva em sistemas ideais?", options: ["Porque não há gravidade", "Porque não há forças dissipativas (atrito/ar)", "Porque a massa diminui"], correct: 1, explain: "Sem atrito, a energia apenas troca de forma." },
-        { q: "12. Se você dobrar a velocidade de um carro, a energia cinética dele:", options: ["Dobra", "Triplica", "Quadruplica"], correct: 2, explain: "Ec = mv²/2. Como v é ao quadrado, 2² = 4." },
-        { q: "13. Uma mola comprimida possui que tipo de energia?", options: ["Cinética", "Potencial Elástica", "Gravitacional"], correct: 1, explain: "Energia armazenada em deformações elásticas." },
-        { q: "14. Trabalho realizado por uma força de 10N que desloca um bloco por 5m:", options: ["2 J", "50 J", "0,5 J"], correct: 1, explain: "Trabalho = Força . Distância = 50 J." },
-        { q: "15. A unidade de medida de Energia no Sistema Internacional (SI) é:", options: ["Watt", "Newton", "Joule"], correct: 2, explain: "Energia e Trabalho são medidos em Joules (J)." }
+        { q: "1. Qual a trajetória de um objeto solto de um avião em movimento (visto do chão)?", options: ["Reta Vertical", "Parábola", "Círculo"], correct: 1, explain: "O objeto herda a velocidade horizontal do avião (inércia)." },
+        { q: "2. No topo de um lançamento oblíquo, a velocidade vertical (Vy) é:", options: ["Máxima", "Dobro de Vx", "Zero"], correct: 2, explain: "O objeto para de subir no ponto mais alto." },
+        { q: "3. Altura de 20m, g=10m/s². Qual o tempo de queda no lançamento horizontal?", options: ["2 segundos", "4 segundos", "1 segundo"], correct: 0, explain: "t = √(2h/g) = √(40/10) = 2s." },
+        { q: "4. Se Vx = 5m/s e o tempo de queda é 2s, o alcance é:", options: ["2.5m", "10m", "7m"], correct: 1, explain: "Alcance = Vx * t = 5 * 2 = 10m." },
+        { q: "5. O ângulo que permite o maior alcance horizontal é:", options: ["30°", "45°", "60°"], correct: 1, explain: "45° é o equilíbrio perfeito entre tempo e velocidade horizontal." },
+        { q: "6. No lançamento horizontal, o movimento no eixo X é do tipo:", options: ["MRU", "MRUV", "Queda Livre"], correct: 0, explain: "Não há aceleração horizontal (desprezando o ar)." },
+        { q: "7. No eixo Y (vertical), o movimento é do tipo:", options: ["MRU", "MRUV / Queda Livre", "Circular"], correct: 1, explain: "A gravidade gera uma aceleração constante." },
+        { q: "8. Uma bola sobe com Vy = 30m/s. Quanto tempo ela leva para atingir o topo? (g=10)", options: ["1s", "3s", "6s"], correct: 1, explain: "t = v/g = 30/10 = 3s." },
+        { q: "9. Se um objeto leva 3s para subir, qual o tempo total de voo?", options: ["3s", "6s", "9s"], correct: 1, explain: "O tempo de subida é igual ao tempo de descida." },
+        { q: "10. Galileu afirmou que os movimentos horizontal e vertical são:", options: ["Dependentes", "Independentes", "Nulos"], correct: 1, explain: "O que acontece em X não afeta o tempo de queda em Y." }
     ];
 
-    let score = 0, answered = 0;
+    let score = 0;
+    let answered = 0;
 
     function renderQuiz() {
         const container = document.getElementById('quiz');
-        container.innerHTML = "";
         questions.forEach((item, index) => {
             const card = document.createElement('div');
             card.className = 'question-card';
             card.innerHTML = `
-                <h3>Desafio ${index + 1}</h3>
+                <h3>Pergunta ${index + 1}</h3>
                 <p>${item.q}</p>
                 <div id="opt-${index}">
                     ${item.options.map((opt, i) => `<button class="option-btn" onclick="check(${index}, ${i})">${opt}</button>`).join('')}
@@ -117,42 +160,32 @@
         buttons.forEach(b => b.disabled = true);
         
         if (optIdx === questions[qIdx].correct) {
-            feed.innerHTML = "✅ <b>Correto!</b> " + questions[qIdx].explain;
+            feed.innerHTML = "✅ Correto! " + questions[qIdx].explain;
             feed.className = 'feedback correct';
             score++;
         } else {
-            feed.innerHTML = "❌ <b>Errado.</b> " + questions[qIdx].explain;
+            feed.innerHTML = "❌ Incorreto. " + questions[qIdx].explain;
             feed.className = 'feedback wrong';
         }
         feed.style.display = 'block';
         answered++;
         document.getElementById('score').innerText = score;
         document.getElementById('answered').innerText = answered;
-        if(answered === 15) showFinal();
+
+        if(answered === 10) showFinal();
     }
 
     function showFinal() {
-        if(score >= 11) {
-            const nome = prompt("Excelente desempenho! Digite seu nome para o certificado:");
+        if(score >= 7) {
+            const nome = prompt("Parabéns! Você foi aprovado. Digite seu nome para o certificado:");
             document.getElementById('userName').innerText = nome || "Estudante de Física";
-            document.getElementById('finalGrade').innerText = Math.round((score/15)*100);
+            document.getElementById('finalGrade').innerText = (score * 10);
+            document.getElementById('certDate').innerText = new Date().toLocaleDateString();
             document.getElementById('final-area').style.display = 'block';
             document.getElementById('certificate').style.display = 'block';
-            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
         } else {
-            alert("Você acertou " + score + "/15. Para ganhar o certificado, você precisa de pelo menos 11 acertos. Tente novamente!");
+            alert("Você acertou " + score + "/10. Estude mais um pouco e tente resetar a página para ganhar o certificado!");
         }
-    }
-
-    function resetQuiz() {
-        score = 0;
-        answered = 0;
-        document.getElementById('score').innerText = "0";
-        document.getElementById('answered').innerText = "0";
-        document.getElementById('final-area').style.display = 'none';
-        document.getElementById('certificate').style.display = 'none';
-        renderQuiz();
-        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     renderQuiz();
