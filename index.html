@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desafio Pratique: Certificado 2D</title>
+    <style>
+        :root {
+            --bg: #0a0a0c;
+            --card: #161b22;
+            --primary: #9c27b0;
+            --correct: #2e7d32;
+            --wrong: #c62828;
+            --text: #f0f6fc;
+            --gold: #ffd700;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .quiz-container { max-width: 700px; width: 100%; }
+
+        header { text-align: center; margin-bottom: 30px; }
+
+        .question-card {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid #30363d;
+            transition: 0.3s;
+        }
+
+        .option-btn {
+            width: 100%;
+            background: #0d1117;
+            border: 1px solid #30363d;
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: left;
+            margin-bottom: 8px;
+        }
+
+        .option-btn:hover:not(:disabled) { border-color: var(--primary); background: #1c2128; }
+
+        .feedback {
+            display: none;
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+        }
+
+        .correct { background: rgba(46, 125, 50, 0.2); border: 1px solid var(--correct); color: #81c784; }
+        .wrong { background: rgba(198, 40, 40, 0.2); border: 1px solid var(--wrong); color: #e57373; }
+
+        .score-board {
+            position: sticky;
+            top: 10px;
+            background: var(--primary);
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            z-index: 100;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        /* ESTILO DO CERTIFICADO */
+        #certificate {
+            display: none;
+            width: 100%;
+            max-width: 600px;
+            background: white;
+            color: #1a1a1a;
+            padding: 40px;
+            border: 10px double var(--primary);
+            text-align: center;
+            margin-top: 30px;
+            position: relative;
+        }
+
+        #certificate h2 { font-family: 'Georgia', serif; color: #1a1a1a; border: none; }
+        .cert-name { font-size: 2rem; font-weight: bold; color: var(--primary); margin: 20px 0; text-decoration: underline; }
+        .cert-stamp { position: absolute; bottom: 20px; right: 20px; opacity: 0.2; transform: rotate(-20deg); }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>📝 Pratique: Movimentos 2D</h1>
+    <p>Complete o desafio para ganhar o seu Certificado de Especialista!</p>
+</header>
+
+<div class="score-board">Progresso: <span id="answered">0</span>/10 | Acertos: <span id="score">0</span></div>
+
+<div class="quiz-container" id="quiz"></div>
+
+<div id="final-area" style="display:none; text-align:center; width:100%;">
+    <div id="certificate">
+        <p>🏆 CERTIFICADO DE EXCELÊNCIA 🏆</p>
+        <h2>CINEMÁTICA EXPLORER</h2>
+        <p>Certificamos que</p>
+        <div class="cert-name" id="userName">NOME DO ALUNO</div>
+        <p>concluiu com êxito os desafios de Movimentos Bidimensionais</p>
+        <p>Aproveitamento: <span id="finalGrade">0</span>%</p>
+        <p><small>Data: <span id="certDate"></span></small></p>
+        <div class="cert-stamp">✅ APROVADO</div>
+    </div>
+    <button onclick="window.print()" style="margin-top:20px; padding:10px 20px; background:var(--gold); color:black; border:none; border-radius:5px; font-weight:bold; cursor:pointer;">🖨️ Imprimir ou Salvar PDF</button>
+</div>
+
+<script>
+    const questions = [
+        { q: "1. Qual a trajetória de um objeto solto de um avião em movimento (visto do chão)?", options: ["Reta Vertical", "Parábola", "Círculo"], correct: 1, explain: "O objeto herda a velocidade horizontal do avião (inércia)." },
+        { q: "2. No topo de um lançamento oblíquo, a velocidade vertical (Vy) é:", options: ["Máxima", "Dobro de Vx", "Zero"], correct: 2, explain: "O objeto para de subir no ponto mais alto." },
+        { q: "3. Altura de 20m, g=10m/s². Qual o tempo de queda no lançamento horizontal?", options: ["2 segundos", "4 segundos", "1 segundo"], correct: 0, explain: "t = √(2h/g) = √(40/10) = 2s." },
+        { q: "4. Se Vx = 5m/s e o tempo de queda é 2s, o alcance é:", options: ["2.5m", "10m", "7m"], correct: 1, explain: "Alcance = Vx * t = 5 * 2 = 10m." },
+        { q: "5. O ângulo que permite o maior alcance horizontal é:", options: ["30°", "45°", "60°"], correct: 1, explain: "45° é o equilíbrio perfeito entre tempo e velocidade horizontal." },
+        { q: "6. No lançamento horizontal, o movimento no eixo X é do tipo:", options: ["MRU", "MRUV", "Queda Livre"], correct: 0, explain: "Não há aceleração horizontal (desprezando o ar)." },
+        { q: "7. No eixo Y (vertical), o movimento é do tipo:", options: ["MRU", "MRUV / Queda Livre", "Circular"], correct: 1, explain: "A gravidade gera uma aceleração constante." },
+        { q: "8. Uma bola sobe com Vy = 30m/s. Quanto tempo ela leva para atingir o topo? (g=10)", options: ["1s", "3s", "6s"], correct: 1, explain: "t = v/g = 30/10 = 3s." },
+        { q: "9. Se um objeto leva 3s para subir, qual o tempo total de voo?", options: ["3s", "6s", "9s"], correct: 1, explain: "O tempo de subida é igual ao tempo de descida." },
+        { q: "10. Galileu afirmou que os movimentos horizontal e vertical são:", options: ["Dependentes", "Independentes", "Nulos"], correct: 1, explain: "O que acontece em X não afeta o tempo de queda em Y." }
+    ];
+
+    let score = 0;
+    let answered = 0;
+
+    function renderQuiz() {
+        const container = document.getElementById('quiz');
+        questions.forEach((item, index) => {
+            const card = document.createElement('div');
+            card.className = 'question-card';
+            card.innerHTML = `
+                <h3>Pergunta ${index + 1}</h3>
+                <p>${item.q}</p>
+                <div id="opt-${index}">
+                    ${item.options.map((opt, i) => `<button class="option-btn" onclick="check(${index}, ${i})">${opt}</button>`).join('')}
+                </div>
+                <div class="feedback" id="feed-${index}"></div>
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    window.check = function(qIdx, optIdx) {
+        const feed = document.getElementById(`feed-${qIdx}`);
+        const buttons = document.getElementById(`opt-${qIdx}`).querySelectorAll('button');
+        buttons.forEach(b => b.disabled = true);
+        
+        if (optIdx === questions[qIdx].correct) {
+            feed.innerHTML = "✅ Correto! " + questions[qIdx].explain;
+            feed.className = 'feedback correct';
+            score++;
+        } else {
+            feed.innerHTML = "❌ Incorreto. " + questions[qIdx].explain;
+            feed.className = 'feedback wrong';
+        }
+        feed.style.display = 'block';
+        answered++;
+        document.getElementById('score').innerText = score;
+        document.getElementById('answered').innerText = answered;
+
+        if(answered === 10) showFinal();
+    }
+
+    function showFinal() {
+        if(score >= 7) {
+            const nome = prompt("Parabéns! Você foi aprovado. Digite seu nome para o certificado:");
+            document.getElementById('userName').innerText = nome || "Estudante de Física";
+            document.getElementById('finalGrade').innerText = (score * 10);
+            document.getElementById('certDate').innerText = new Date().toLocaleDateString();
+            document.getElementById('final-area').style.display = 'block';
+            document.getElementById('certificate').style.display = 'block';
+        } else {
+            alert("Você acertou " + score + "/10. Estude mais um pouco e tente resetar a página para ganhar o certificado!");
+        }
+    }
+
+    renderQuiz();
+</script>
+</body>
+</html>
